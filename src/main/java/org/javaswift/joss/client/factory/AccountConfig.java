@@ -4,6 +4,9 @@ import static org.javaswift.joss.client.factory.AuthenticationMethod.*;
 
 public class AccountConfig {
 
+    private String userId;
+
+    private String projectId;
     /**
     * ObjectStore tenant name. This is most often equated with the project
     */
@@ -381,5 +384,21 @@ public class AccountConfig {
 
     public void setMockOnFileObjectStoreIsAbsolutePath(boolean mockOnFileObjectStoreIsAbsolutePath) {
         this.mockOnFileObjectStoreIsAbsolutePath = mockOnFileObjectStoreIsAbsolutePath;
+    }
+
+    public String getUserId() {
+        return userId;
+	}
+
+    public void setUserId(String userId) {
+	    this.userId = userId;
+    }
+
+    public String getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(String projectId) {
+        this.projectId = projectId;
     }
 }

@@ -28,4 +28,11 @@ public class AuthenticationCommandFactoryImpl implements AuthenticationCommandFa
         }
     }
 
+    @Override
+    public AuthenticationCommand createAuthenticationCommand(HttpClient httpClient, AuthenticationMethod authenticationMethod,
+        String url, String userId, String password,
+        String projectId, AuthenticationMethod.AccessProvider accessProvier) {
+      return new KeystoneAuthenticationCommandImpl(httpClient, url, userId, password, projectId);
+    }
+
 }

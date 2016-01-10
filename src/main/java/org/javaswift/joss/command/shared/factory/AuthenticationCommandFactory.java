@@ -10,4 +10,8 @@ public interface AuthenticationCommandFactory {
                                                       String url, String tenantName, String tenantId,
                                                       String username, String password, AuthenticationMethod.AccessProvider accessProvier);
 
+    AuthenticationCommand createAuthenticationCommand(HttpClient httpClient, AuthenticationMethod authenticationMethod,
+            String url, String userId, String password,
+            String projectId, AuthenticationMethod.AccessProvider accessProvier);
+
 }

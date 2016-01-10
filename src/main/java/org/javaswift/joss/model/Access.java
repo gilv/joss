@@ -51,4 +51,6 @@ public interface Access {
     */
     public String getTempUrlPrefix(TempUrlHashPrefixSource tempUrlHashPrefixSource);
 
+    public void setManualToken(String token);
+
 }

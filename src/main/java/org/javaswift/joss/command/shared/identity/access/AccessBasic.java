@@ -43,4 +43,10 @@ public class AccessBasic implements Access {
     public String getTempUrlPrefix(TempUrlHashPrefixSource tempUrlHashPrefixSource) {
         return url.endsWith("/") ? url.substring(0, url.length()-1) : url;
     }
+
+    @Override
+    public void setManualToken(String token) {
+      // TODO Auto-generated method stub
+    }
+
 }

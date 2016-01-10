@@ -2,6 +2,7 @@ package org.javaswift.joss.command.mock.factory;
 
 import org.apache.http.client.HttpClient;
 import org.javaswift.joss.client.factory.AuthenticationMethod;
+import org.javaswift.joss.client.factory.AuthenticationMethod.AccessProvider;
 import org.javaswift.joss.command.mock.identity.AuthenticationCommandMock;
 import org.javaswift.joss.command.shared.factory.AuthenticationCommandFactory;
 import org.javaswift.joss.command.shared.identity.AuthenticationCommand;
@@ -21,5 +22,13 @@ public class AuthenticationCommandFactoryMock implements AuthenticationCommandFa
                                                              String username, String password, AuthenticationMethod.AccessProvider accessProvier) {
         return new AuthenticationCommandMock(swift, url, tenantName, tenantId, username, password);
     }
+
+	@Override
+	public AuthenticationCommand createAuthenticationCommand(HttpClient httpClient,
+			AuthenticationMethod authenticationMethod, String url, String userId, String password, String projectId,
+			AccessProvider accessProvier) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

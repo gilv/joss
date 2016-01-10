@@ -65,4 +65,9 @@ public class AccessTenant extends AbstractAccess {
         return this.currentEndPoint;
     }
 
+	@Override
+	public void setManualToken(String token) {
+	  // TODO Auto-generated method stub
+	}
+
 }

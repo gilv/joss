@@ -9,11 +9,16 @@ public class Authentication {
     private PasswordCredentials passwordCredentials;
     private String tenantName;
     private String tenantId;
+    private Identity identity;
 
     public Authentication(final String tenantName, String tenantId, final String username, final String password) {
         this.passwordCredentials = new PasswordCredentials(username, password);
         this.tenantName = tenantName;
         this.tenantId = tenantId;
+    }
+
+    public Authentication(final String userId, final String password, final String projectId) {
+        this.identity = new Identity("password", userId, password, projectId);
     }
 
     @JsonSerialize(include=Inclusion.NON_NULL)
@@ -26,6 +31,12 @@ public class Authentication {
         return this.tenantName;
     }
 
+    @JsonSerialize(include=Inclusion.NON_NULL)
+    public Identity getIdentity() {
+        return this.identity;
+    }
+
+    @JsonSerialize(include=Inclusion.NON_NULL)
     public PasswordCredentials getPasswordCredentials() {
         return this.passwordCredentials;
     }

@@ -1,5 +1,7 @@
 package org.javaswift.joss.command.shared.identity.access;
 
+import java.util.HashMap;
+
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.map.annotate.JsonRootName;
 import org.javaswift.joss.client.factory.TempUrlHashPrefixSource;
@@ -22,5 +24,10 @@ public class AccessNoTenant extends AbstractAccess {
     protected EndPoint determineCurrentEndPoint() {
         return null;  // Unused
     }
+
+	@Override
+	public void setManualToken(String token) {
+	  // TODO Auto-generated method stub
+	}
 
 }

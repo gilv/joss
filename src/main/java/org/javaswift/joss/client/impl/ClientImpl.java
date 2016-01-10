@@ -81,7 +81,9 @@ public class ClientImpl extends AbstractClient<AccountImpl> {
 
     @Override
     protected AccountImpl createAccount() {
-        AuthenticationCommand command = this.factory.createAuthenticationCommand(
+        AuthenticationCommand command = null;
+        if (accountConfig.getProjectId() == null ) {
+        command = this.factory.createAuthenticationCommand(
                 httpClient,
                 accountConfig.getAuthenticationMethod(),
                 accountConfig.getAuthUrl(),
@@ -90,6 +92,16 @@ public class ClientImpl extends AbstractClient<AccountImpl> {
                 accountConfig.getUsername(),
                 accountConfig.getPassword(),
                 accountConfig.getAccessProvider());
+        } else {
+           command = this.factory.createAuthenticationCommand(
+               httpClient,
+               accountConfig.getAuthenticationMethod(),
+               accountConfig.getAuthUrl(),
+               accountConfig.getUserId(),
+               accountConfig.getPassword(),
+               accountConfig.getProjectId(),
+               accountConfig.getAccessProvider());
+        }
         LOG.info(
                 "JOSS / Attempting authentication with tenant name: " + accountConfig.getTenantName()+
                         ", tenant ID: "+accountConfig.getTenantId()+

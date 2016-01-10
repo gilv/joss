@@ -11,6 +11,7 @@ import org.javaswift.joss.command.impl.core.httpstatus.HttpStatusSuccessConditio
 import org.javaswift.joss.command.shared.identity.AuthenticationCommand;
 import org.javaswift.joss.command.shared.identity.access.AccessNoTenant;
 import org.javaswift.joss.command.shared.identity.access.AccessTenant;
+import org.javaswift.joss.command.shared.identity.access.AccessToken;
 import org.javaswift.joss.command.shared.identity.authentication.Authentication;
 import org.javaswift.joss.exception.CommandException;
 import org.javaswift.joss.headers.Accept;
@@ -22,12 +23,23 @@ public class KeystoneAuthenticationCommandImpl extends AbstractCommand<HttpPost,
 
     private boolean tenantSupplied;
 
+    private boolean isKeystoneV3 = false;
+
     private String url;
 
     public KeystoneAuthenticationCommandImpl(HttpClient httpClient, String url, String tenantName, String tenantId, String username, String password) {
         super(httpClient, url);
         setAuthenticationHeader(tenantName, tenantId, username, password);
         setTenantSupplied(tenantName, tenantId);
+        setHeader(new Accept("application/json"));
+        this.url = url;
+    }
+
+    public KeystoneAuthenticationCommandImpl(HttpClient httpClient, String url, String userId, String password, String projectId) {
+        super(httpClient, url);
+        isKeystoneV3 = true;
+        setTenantSupplied("", "");
+        setAuthenticationHeader(userId, password, projectId);
         setHeader(new Accept("application/json"));
         this.url = url;
     }
@@ -52,8 +64,27 @@ public class KeystoneAuthenticationCommandImpl extends AbstractCommand<HttpPost,
         }
     }
 
+    private void setAuthenticationHeader(String userId, String password, String projectId) {
+        try {
+            Authentication auth = new Authentication(userId, password, projectId);
+            String jsonString = createObjectMapper(true).writeValueAsString(auth);
+            StringEntity input = new StringEntity(jsonString);
+            input.setContentType("application/json");
+            request.setEntity(input);
+        } catch (IOException err) {
+            throw new CommandException("Unable to set the JSON body for the authentication header", err);
+        }
+    }
+
     @Override
     public Access getReturnObject(HttpResponse response) throws IOException {
+      if (isKeystoneV3) {
+          String subjectToken = response.getFirstHeader("X-Subject-Token").getValue();
+          Access access = createObjectMapper(true)
+                    .readValue(response.getEntity().getContent(), AccessToken.class);
+          access.setManualToken(subjectToken);
+          return access;
+        }
         if (isTenantSupplied()) {
             return createObjectMapper(true)
                     .readValue(response.getEntity().getContent(), AccessTenant.class);
